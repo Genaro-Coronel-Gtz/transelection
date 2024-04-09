@@ -1,8 +1,9 @@
 import sys
+import subprocess
+import pyttsx3
 from PyQt5 import QtWidgets, uic
 from PyQt5.QtGui import QColor, QPalette
-from PyQt5.QtCore import *
-import subprocess
+from PyQt5.QtCore import Qt
 from os import environ
 from dotenv import load_dotenv
 
@@ -12,7 +13,16 @@ from MainWindow import Ui_mainWindow
 class MainWindow(QtWidgets.QMainWindow, Ui_mainWindow):
 
     def speech_translated_text(self):
-        print('speech text clicked', self.textEdit_2.toPlainText())
+        translated_text = self.textEdit.toPlainText()
+        print('speech text clicked', translated_text)
+
+        engine = pyttsx3.init()
+        engine.setProperty('rate', 150)
+        lang = environ.get("ORG_LANGUAGE")
+        engine.setProperty('voice', lang)
+        engine.say(translated_text)
+        engine.runAndWait()
+        
 
     def traducir_texto(self, text):
         print(' traducir texto ', text)
